@@ -1,7 +1,7 @@
 package com.cme.codeUp.codeUp2018.controllers;
 
-import com.cme.codeUp.codeUp2018.PersonRepository;
 import com.cme.codeUp.codeUp2018.entities.Person;
+import com.cme.codeUp.codeUp2018.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class ApiController {
 
     @Autowired
-    private PersonRepository personRepository;
+    private PersonService personService;
 
     @GetMapping(path = "/addPerson") // Map ONLY GET Requests
     public @ResponseBody String addNewUser(@RequestParam String name, @RequestParam String email) {
@@ -22,7 +22,7 @@ public class ApiController {
         Person n = new Person();
         n.setName(name);
         n.setEmail(email);
-        personRepository.save(n);
+        personService.addPerson(n);
         return "Saved new person";
 
     }
@@ -31,6 +31,6 @@ public class ApiController {
     public @ResponseBody
     Iterable<Person> getAllUsers() {
         // This returns a JSON or XML with the users
-        return personRepository.findAll();
+        return personService.retrievePeople();
     }
 }
